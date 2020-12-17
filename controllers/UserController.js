@@ -44,3 +44,40 @@ exports.login = async (req,res,next) => {
         next(error);
     }
 };
+
+
+exports.register = async (req,res,next) => {
+
+    try{
+        req.body.password = bcrypt.hashSync(req.body.password,10);
+        let users = await usuario.create(req.body);
+        res.status(200).json(users);
+
+    }
+    catch(error){
+
+        res.status(401);
+        console.log("Unable to create user")
+        next(error);
+
+    }
+
+
+
+};
+
+exports.list = async(req,res,next) => {
+
+    try{
+
+        let users = await usuario.findAll();
+        res.status(200).json(users)
+    }
+    catch(error){
+
+        res.status(401);
+        console.log("Unable to list");
+        next(error);
+    }
+
+}
